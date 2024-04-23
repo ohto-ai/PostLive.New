@@ -1,19 +1,19 @@
 #pragma once
 
 #include <QDialog>
-#include "ui_LoginPannel.h"
+#include "ui_LoginPanel.h"
 
 QT_BEGIN_NAMESPACE
-namespace Ui { class LoginPannelClass; };
+namespace Ui { class LoginPanelClass; };
 QT_END_NAMESPACE
 
-class LoginPannel : public QDialog
+class LoginPanel : public QDialog
 {
     Q_OBJECT
 
 public:
-    LoginPannel(QWidget *parent = nullptr);
-    ~LoginPannel();
+    LoginPanel(QWidget *parent = nullptr);
+    ~LoginPanel();
 
     void login();
 
@@ -23,6 +23,6 @@ public:
     void mouseReleaseEvent(QMouseEvent* event) override;
 
 private:
-    Ui::LoginPannelClass *ui;
+    Ui::LoginPanelClass *ui;
     QPoint m_dragPosition;
 };

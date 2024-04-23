@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>LoginPannelClass</class>
- <widget class="QDialog" name="LoginPannelClass">
+ <class>LoginPanelClass</class>
+ <widget class="QDialog" name="LoginPanelClass">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>LoginPannel</string>
+   <string>LoginPanel</string>
   </property>
   <property name="styleSheet">
    <string notr="true">* {
@@ -712,7 +712,7 @@ QPushButton:enabled:pressed {
   <connection>
    <sender>closeButton</sender>
    <signal>clicked()</signal>
-   <receiver>LoginPannelClass</receiver>
+   <receiver>LoginPanelClass</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
