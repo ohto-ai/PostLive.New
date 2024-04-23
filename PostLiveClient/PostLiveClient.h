@@ -16,6 +16,13 @@ class PostLiveClient : public QMainWindow
 public:
     PostLiveClient(QWidget *parent = nullptr);
     ~PostLiveClient();
+
+public:
+    void mousePressEvent(QMouseEvent* event) override;
+    void mouseMoveEvent(QMouseEvent* event) override;
+    void mouseReleaseEvent(QMouseEvent* event) override;
+
 private:
     Ui::PostLiveClientClass *ui;
+    QPoint m_dragPosition;
 };
