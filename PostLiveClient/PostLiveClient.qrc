@@ -1,4 +1,15 @@
 <RCC>
-    <qresource prefix="PostLiveClient">
+    <qresource prefix="/main">
+    </qresource>
+    <qresource prefix="/login">
+        <file>res/genshin.jpg</file>
+        <file>res/password.png</file>
+        <file>res/account.png</file>
+        <file>res/avatar-mask.png</file>
+        <file>res/setting.png</file>
+        <file>res/LIVE.png</file>
+        <file>res/avatar-female.png</file>
+        <file>res/avatar.png</file>
+        <file>res/avatar-male.png</file>
     </qresource>
 </RCC>
