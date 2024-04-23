@@ -1,5 +1,8 @@
 #include "PostLiveClient.h"
 #include "CommonConfigDialog.h"
+#include <QPushButton>
+#include <QStyle>
+#include <QMouseEvent>
 
 extern "C" {
     #include <libavdevice/avdevice.h>
@@ -48,4 +51,37 @@ PostLiveClient::PostLiveClient(QWidget* parent)
 
 PostLiveClient::~PostLiveClient() {
     delete ui;
+}
+
+
+void PostLiveClient::mousePressEvent(QMouseEvent* event) {
+    if (event->button() == Qt::LeftButton) {
+        m_dragPosition = event->globalPos() - this->pos();
+        event->accept();
+    }
+    else {
+        QMainWindow::mousePressEvent(event);
+    }
+}
+
+void PostLiveClient::mouseMoveEvent(QMouseEvent* event) {
+    if (event->buttons() & Qt::LeftButton) {
+        if (!m_dragPosition.isNull()) {
+            this->move(event->globalPos() - m_dragPosition);
+            event->accept();
+        }
+    }
+    else {
+        QMainWindow::mouseMoveEvent(event);
+    }
+}
+
+void PostLiveClient::mouseReleaseEvent(QMouseEvent* event) {
+    if (event->button() == Qt::LeftButton) {
+        m_dragPosition = QPoint();
+        event->accept();
+    }
+    else {
+        QMainWindow::mouseReleaseEvent(event);
+    }
 }
