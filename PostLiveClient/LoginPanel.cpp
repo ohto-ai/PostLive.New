@@ -1,25 +1,25 @@
-#include "LoginPannel.h"
+#include "LoginPanel.h"
 #include <QMessageBox>
 #include <QStyle>
 #include <QMouseEvent>
 
-LoginPannel::LoginPannel(QWidget *parent)
+LoginPanel::LoginPanel(QWidget *parent)
     : QDialog(parent)
-    , ui(new Ui::LoginPannelClass())
+    , ui(new Ui::LoginPanelClass())
 {
     ui->setupUi(this);
     setWindowFlag(Qt::FramelessWindowHint);
 
     ui->closeButton->setIcon(QApplication::style()->standardIcon(QStyle::SP_TitleBarCloseButton));
-    connect(ui->loginButton, &QPushButton::clicked, this, &LoginPannel::login);
+    connect(ui->loginButton, &QPushButton::clicked, this, &LoginPanel::login);
 }
 
-LoginPannel::~LoginPannel()
+LoginPanel::~LoginPanel()
 {
     delete ui;
 }
 
-void LoginPannel::login() {
+void LoginPanel::login() {
     QString username = ui->inputAccount->text();
     QString password = ui->inputPassword->text();
     if (username == "username" && password == "password") {
@@ -29,7 +29,7 @@ void LoginPannel::login() {
     }
 }
 
-void LoginPannel::mousePressEvent(QMouseEvent* event) {
+void LoginPanel::mousePressEvent(QMouseEvent* event) {
     if (event->button() == Qt::LeftButton) {
         m_dragPosition = event->globalPos() - this->pos();
         event->accept();
@@ -39,7 +39,7 @@ void LoginPannel::mousePressEvent(QMouseEvent* event) {
     }
 }
 
-void LoginPannel::mouseMoveEvent(QMouseEvent* event) {
+void LoginPanel::mouseMoveEvent(QMouseEvent* event) {
     if (event->buttons() & Qt::LeftButton) {
         if (!m_dragPosition.isNull()) {
             this->move(event->globalPos() - m_dragPosition);
@@ -51,7 +51,7 @@ void LoginPannel::mouseMoveEvent(QMouseEvent* event) {
     }
 }
 
-void LoginPannel::mouseReleaseEvent(QMouseEvent* event) {
+void LoginPanel::mouseReleaseEvent(QMouseEvent* event) {
     if (event->button() == Qt::LeftButton) {
         m_dragPosition = QPoint();
         event->accept();
