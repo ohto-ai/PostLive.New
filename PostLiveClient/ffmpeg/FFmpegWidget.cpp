@@ -60,6 +60,7 @@ FFmpegWidget::FFmpegWidget(QWidget *parent)
     connect(ffmpegVideo, &FFmpegVideo::error, this, [this](int ec, const QString& error) {
         ffmpegVideoErrorCode = ec;
         ffmpegVideoErrorString = error;
+        clearFrame();
         updateStatusBar();
         update();
         QTimer::singleShot(3000, this, [this] {
