@@ -109,12 +109,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CommonConfigDialog.cpp" />
     <ClCompile Include="ffmpeg/FFmpegWidget.cpp" />
     <ClCompile Include="WinDbgHelper.cpp" />
     <QtRcc Include="PostLiveClient.qrc" />
     <QtUic Include="form/LoginPannel.ui" />
     <QtUic Include="form/PostLiveClient.ui" />
     <QtMoc Include="PostLiveClient.h" />
+    <QtMoc Include="CommonConfigDialog.h" />
     <QtMoc Include="ffmpeg/FFmpegVideo.h" />
     <QtMoc Include="ffmpeg/FFmpegWidget.h" />
     <ClCompile Include="ffmpeg/FFmpegVideo.cpp" />

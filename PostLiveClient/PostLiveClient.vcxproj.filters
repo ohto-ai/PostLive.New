@@ -52,6 +52,9 @@
     <ClCompile Include="ffmpeg/FFmpegWidget.cpp">
       <Filter>ffmpeg</Filter>
     </ClCompile>
+    <ClCompile Include="CommonConfigDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="form/LoginPannel.ui">
@@ -70,6 +73,9 @@
     </ClInclude>
     <ClInclude Include="utils\scope_guard.hpp">
       <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="CommonConfigDialog.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
