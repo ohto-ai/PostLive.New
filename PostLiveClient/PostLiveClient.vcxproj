@@ -110,6 +110,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CommonConfigDialog.cpp" />
+    <ClCompile Include="components\DraggableZone.cpp" />
     <ClCompile Include="ffmpeg/FFmpegWidget.cpp" />
     <ClCompile Include="components/ImageLabel.cpp" />
     <ClCompile Include="LoginPanel.cpp" />
@@ -121,6 +122,7 @@
     <QtMoc Include="CommonConfigDialog.h" />
     <QtMoc Include="ffmpeg/FFmpegVideo.h" />
     <QtMoc Include="ffmpeg/FFmpegWidget.h" />
+    <QtMoc Include="components\DraggableZone.h" />
     <QtMoc Include="LoginPanel.h" />
     <QtMoc Include="components/ImageLabel.h" />
     <ClCompile Include="ffmpeg/FFmpegVideo.cpp" />

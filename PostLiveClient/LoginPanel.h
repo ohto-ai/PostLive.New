@@ -17,12 +17,6 @@ public:
 
     void login();
 
-public:
-    void mousePressEvent(QMouseEvent* event) override;
-    void mouseMoveEvent(QMouseEvent* event) override;
-    void mouseReleaseEvent(QMouseEvent* event) override;
-
 private:
     Ui::LoginPanelClass *ui;
-    QPoint m_dragPosition;
 };
