@@ -1,3 +1,3 @@
 # PostLive
 
-![Login](doc\img\login.png)
+![Login](doc/img/login.png)
