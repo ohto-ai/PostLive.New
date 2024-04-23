@@ -57,7 +57,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <QtUic Include="form/LoginPannel.ui">
+    <QtUic Include="form/LoginPanel.ui">
       <Filter>Form Files</Filter>
     </QtUic>
     <QtUic Include="form/PostLiveClient.ui">

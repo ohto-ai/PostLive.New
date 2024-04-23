@@ -1,5 +1,5 @@
 #include "PostLiveClient.h"
-#include "LoginPannel.h"
+#include "LoginPanel.h"
 
 #if defined(Q_OS_WINDOWS)
     #include "components/WinDbgHelper.h"
@@ -14,7 +14,7 @@ int main(int argc, char* argv[]) {
     WinDbgHelper dbg;
 #endif
 
-    LoginPannel p;
+    LoginPanel p;
 
     if (p.exec() == QDialog::Rejected) {
         return 0;
