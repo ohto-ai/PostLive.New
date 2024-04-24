@@ -15,9 +15,6 @@ extern "C" {
 FFmpegWidget::FFmpegWidget(QWidget *parent)
     : QWidget(parent)
 {
-    //setAttribute(Qt::WA_OpaquePaintEvent);
-    //setAttribute(Qt::WA_NoSystemBackground);
-
     setAcceptDrops(true);
     ffmpegVideo = new FFmpegVideo(this);
 #ifdef _DEBUG
@@ -79,6 +76,10 @@ FFmpegWidget::~FFmpegWidget() {
 
 void FFmpegWidget::setUrl(const QString & url) {
     ffmpegVideo->setUrl(url);
+}
+
+bool FFmpegWidget::setInputDevice(const FFmpegInputDevice* device) {
+    return ffmpegVideo->setInputDevice(device);
 }
 
 void FFmpegWidget::play() {

@@ -25,4 +25,5 @@ public:
 private:
     Ui::PostLiveClientClass *ui;
     QPoint m_dragPosition;
+    std::vector<struct FFmpegInputDevice> m_gdiDevices;
 };

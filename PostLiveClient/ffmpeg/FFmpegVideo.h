@@ -1,14 +1,5 @@
 #pragma once
-#include <mutex>
 #include <QThread>
-
-struct AVDeviceInfoList;
-struct AVInputFormat;
-struct AVFormatContext;
-struct AVCodecContext;
-struct AVCodecParameters;
-struct AVCodec;
-struct SwsContext;
 
 class FFmpegVideo : public QThread {
     Q_OBJECT
@@ -18,9 +9,8 @@ public:
     FFmpegVideo(QObject* parent = nullptr);
     ~FFmpegVideo();
 
-    static AVDeviceInfoList* updateDeviceList();
-
     void setUrl(QString url);
+    bool setInputDevice(const struct FFmpegInputDevice* device);
     void run() override;
     void stop();
 private:
@@ -33,17 +23,17 @@ signals:
 
 private:
     void postFFmpegError(int error);
-    static inline std::once_flag registerFlag_;
-    static inline AVDeviceInfoList* deviceList = nullptr;
-    static inline const AVInputFormat* inputDeviceFormat = nullptr;
 
     QString url;
+    const struct FFmpegInputDevice* device = nullptr;
 
-    AVFormatContext* formatContext = nullptr;
-    AVCodecContext* inputVideoCodecContext = nullptr;
+    struct AVFormatContext* formatContext = nullptr;
+    struct AVCodecContext* inputVideoCodecContext = nullptr;
     int inputVideoStreamIndex = -1;
-    AVCodecParameters* inputVideoCodecPara = nullptr;
-    const AVCodec* inputVideoCodec = nullptr;
+    struct AVCodecParameters* inputVideoCodecPara = nullptr;
+    const struct AVCodec* inputVideoCodec = nullptr;
 
-    SwsContext* img_ctx = nullptr;
+    struct SwsContext* img_ctx = nullptr;
+
+    std::mutex deviceMutex;
 };

@@ -1,5 +1,7 @@
 #include "FFmpegVideo.h"
+#include "ffmpeg/FFmpegInputDevice.h"
 #include <memory>
+#include <mutex>
 #include <utils/scope_guard.hpp>
 
 //#ifdef _DEBUG
@@ -17,43 +19,26 @@ extern "C" {
 }
 
 FFmpegVideo::FFmpegVideo(QObject* parent) : QThread{ parent } {
-    std::call_once(registerFlag_, [this] {
-        avdevice_register_all();
-        avformat_network_init();
-        });
-#if defined(Q_OS_WINDOWS)
-    inputDeviceFormat = av_find_input_format("dshow");
-#elif defined(Q_OS_LINUX)
-    inputDeviceFormat = av_find_input_format("video4linux2");
-#elif defined(Q_OS_MAC)
-    inputDeviceFormat = av_find_input_format("avfoundation");
-#endif
 }
 
 FFmpegVideo::~FFmpegVideo() {
-    //avdevice_free_list_devices(&deviceList);
     stop();
 }
 
-AVDeviceInfoList* FFmpegVideo::updateDeviceList() {
-    if (deviceList) {
-        avdevice_free_list_devices(&deviceList);
-    }
-    auto ret = avdevice_list_input_sources(inputDeviceFormat, nullptr, nullptr, &deviceList);
-    if (ret < 0) {
-        return nullptr;
-    }
-#ifdef _DEBUG
-    for (int i = 0; i < deviceList->nb_devices; i++) {
-        qDebug() << "Device: " << deviceList->devices[i]->device_name << " - " << deviceList->devices[i]->device_description;
-    }
-#endif // _DEBUG
-
-    return deviceList;
+void FFmpegVideo::setUrl(QString url) {
+    std::lock_guard lock{ deviceMutex };
+    this->url = url;
+    this->device = nullptr;
 }
 
-void FFmpegVideo::setUrl(QString url) {
-    this->url = url;
+bool FFmpegVideo::setInputDevice(const FFmpegInputDevice* device) {
+    std::lock_guard lock{ deviceMutex };
+    if (device == nullptr || std::find(device->media_types.begin(), device->media_types.end(), AVMEDIA_TYPE_VIDEO) == device->media_types.end()) {
+        return false;
+    }
+    this->device = device;
+    this->url = device->streamUrls[AVMEDIA_TYPE_VIDEO].c_str();
+    return true;
 }
 
 void FFmpegVideo::clean() {
@@ -71,11 +56,8 @@ void FFmpegVideo::clean() {
 bool FFmpegVideo::open() {
     do {
         int ec = 0;
-        //=========================== 创建AVFormatContext结构体 ===============================//
-        //分配一个AVFormatContext，FFMPEG所有的操作都要通过这个AVFormatContext来进行
         formatContext = avformat_alloc_context();
-        //==================================== 打开文件 ======================================//
-        ec = avformat_open_input(&formatContext, url.toUtf8().constData(), url.startsWith("video=") ? inputDeviceFormat : nullptr, nullptr);
+        ec = avformat_open_input(&formatContext, url.toUtf8().constData(), device != nullptr ? device->input_format : nullptr, nullptr);
         if (ec < 0) {
             postFFmpegError(ec);
             break;
@@ -88,11 +70,7 @@ bool FFmpegVideo::open() {
             break;
         }
 
-        //循环查找视频中包含的流信息，直到找到视频类型的流
-        //便将其记录下来 保存到videoStreamIndex变量中
         inputVideoStreamIndex = av_find_best_stream(formatContext, AVMEDIA_TYPE_VIDEO, -1, -1, nullptr, 0);
-
-        //如果videoStream为-1 说明没有找到视频流
         if (inputVideoStreamIndex < 0) {
             postFFmpegError(inputVideoStreamIndex);
             break;

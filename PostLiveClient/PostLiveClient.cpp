@@ -1,5 +1,6 @@
 #include "PostLiveClient.h"
 #include "CommonConfigDialog.h"
+#include "ffmpeg/FFmpegInputDevice.h"
 #include <QPushButton>
 #include <QStyle>
 #include <QMouseEvent>
@@ -25,13 +26,22 @@ PostLiveClient::PostLiveClient(QWidget* parent)
         ui->ffmpegWidget->play();
         });
 
-    auto deviceList = FFmpegVideo::updateDeviceList();
+    FFmpegInputDevice::updateInputDeviceList();
+    auto deviceList = FFmpegInputDevice::filterVideoDevices();
 
-    for (int i = 0; i < deviceList->nb_devices; i++) {
-        auto url = QString::asprintf("video=%s", deviceList->devices[i]->device_name);
-        ui->menu_Devices->addAction(deviceList->devices[i]->device_description, [this, url] {
+    for (auto device : deviceList) {
+        ui->menu_Devices->addAction(device->device_description.c_str(), [this, device] {
             ui->ffmpegWidget->stop();
-            ui->ffmpegWidget->setUrl(url);
+            ui->ffmpegWidget->setInputDevice(device);
+            ui->ffmpegWidget->play();
+            });
+    }
+    m_gdiDevices.push_back(FFmpegInputDevice::make_gdi_device());
+    m_gdiDevices.push_back(FFmpegInputDevice::make_gdi_device(windowTitle().toStdString()));
+    for (auto& device : m_gdiDevices) {
+        ui->menu_Devices->addAction(device.device_description.c_str(), [this, &device] {
+            ui->ffmpegWidget->stop();
+            ui->ffmpegWidget->setInputDevice(&device);
             ui->ffmpegWidget->play();
             });
     }

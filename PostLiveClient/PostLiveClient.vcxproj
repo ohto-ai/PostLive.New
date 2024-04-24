@@ -113,6 +113,7 @@
     <ClCompile Include="components\DraggableZone.cpp" />
     <ClCompile Include="ffmpeg/FFmpegWidget.cpp" />
     <ClCompile Include="components/ImageLabel.cpp" />
+    <ClCompile Include="ffmpeg\FFmpegInputDevice.cpp" />
     <ClCompile Include="LoginPanel.cpp" />
     <ClCompile Include="components/WinDbgHelper.cpp" />
     <QtRcc Include="PostLiveClient.qrc" />
@@ -131,6 +132,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="crt/dll_crt.h" />
+    <ClInclude Include="ffmpeg\FFmpegInputDevice.h" />
     <ClInclude Include="utils/scope_guard.hpp" />
     <ClInclude Include="components/WinDbgHelper.h" />
   </ItemGroup>

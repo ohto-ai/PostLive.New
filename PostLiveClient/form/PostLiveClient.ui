@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>PostLiveClient</string>
+   <string>PostLive Broadcast Client</string>
   </property>
   <property name="styleSheet">
    <string notr="true">* {
@@ -497,7 +497,7 @@ QPushButton:enabled:pressed {
      <x>0</x>
      <y>0</y>
      <width>652</width>
-     <height>24</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">

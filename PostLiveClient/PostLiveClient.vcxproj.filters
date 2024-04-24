@@ -64,6 +64,9 @@
     <ClCompile Include="components/WinDbgHelper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ffmpeg\FFmpegInputDevice.cpp">
+      <Filter>ffmpeg</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="form/LoginPanel.ui">
@@ -82,6 +85,9 @@
     </ClInclude>
     <ClInclude Include="components/WinDbgHelper.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ffmpeg\FFmpegInputDevice.h">
+      <Filter>ffmpeg</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
