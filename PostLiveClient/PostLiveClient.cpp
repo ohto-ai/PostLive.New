@@ -95,3 +95,8 @@ void PostLiveClient::mouseReleaseEvent(QMouseEvent* event) {
         QMainWindow::mouseReleaseEvent(event);
     }
 }
+
+void PostLiveClient::closeEvent(QCloseEvent* event) {
+    ui->ffmpegWidget->stop();
+    QMainWindow::closeEvent(event);
+}
