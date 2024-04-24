@@ -43,9 +43,6 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="WinDbgHelper.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ffmpeg/FFmpegVideo.cpp">
       <Filter>ffmpeg</Filter>
     </ClCompile>
@@ -53,6 +50,18 @@
       <Filter>ffmpeg</Filter>
     </ClCompile>
     <ClCompile Include="CommonConfigDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="components\DraggableZone.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="components/ImageLabel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LoginPanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="components/WinDbgHelper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -65,16 +74,13 @@
     </QtUic>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="WinDbgHelper.h">
+    <ClInclude Include="crt/dll_crt.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="crt\dll_crt.h">
-      <Filter>utils</Filter>
+    <ClInclude Include="utils/scope_guard.hpp">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="utils\scope_guard.hpp">
-      <Filter>utils</Filter>
-    </ClInclude>
-    <ClInclude Include="CommonConfigDialog.h">
+    <ClInclude Include="components/WinDbgHelper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -84,6 +90,18 @@
     </QtMoc>
     <QtMoc Include="ffmpeg/FFmpegWidget.h">
       <Filter>ffmpeg</Filter>
+    </QtMoc>
+    <QtMoc Include="CommonConfigDialog.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="components\DraggableZone.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="LoginPanel.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="components/ImageLabel.h">
+      <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>
