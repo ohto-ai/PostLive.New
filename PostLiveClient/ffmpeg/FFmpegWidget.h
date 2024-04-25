@@ -3,13 +3,14 @@
 #include <QWidget>
 #include <QImage>
 #include <memory>
+#include "components/FileDropZone.h"
 
-class FFmpegWidget : public QWidget
+class FFmpegWidget : public FileDropZone
 {
     Q_OBJECT
 
 public:
-    FFmpegWidget(QWidget *parent);
+    FFmpegWidget(QWidget *parent = nullptr);
     ~FFmpegWidget();
 
 public:
@@ -25,9 +26,6 @@ protected slots:
 
 public:
     void paintEvent(QPaintEvent* event) override;
-    void dragEnterEvent(QDragEnterEvent* event) override;
-    //void dragMoveEvent(QDragMoveEvent* event) override;
-    void dropEvent(QDropEvent* event) override;
 
 private:
     bool option_displayFPS = false;

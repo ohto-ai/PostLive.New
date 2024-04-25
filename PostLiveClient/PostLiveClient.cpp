@@ -1,5 +1,5 @@
 #include "PostLiveClient.h"
-#include "CommonConfigDialog.h"
+#include "components/CommonConfigDialog.h"
 #include "ffmpeg/FFmpegInputDevice.h"
 #include <QPushButton>
 #include <QStyle>

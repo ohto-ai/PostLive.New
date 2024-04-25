@@ -13,9 +13,8 @@ extern "C" {
 }
 
 FFmpegWidget::FFmpegWidget(QWidget *parent)
-    : QWidget(parent)
+    : FileDropZone(parent)
 {
-    setAcceptDrops(true);
     ffmpegVideo = new FFmpegVideo(this);
 #ifdef _DEBUG
     option_displayFPS= true;
@@ -68,6 +67,13 @@ FFmpegWidget::FFmpegWidget(QWidget *parent)
         }, Qt::QueuedConnection);
 
     connect(ffmpegVideo, &FFmpegVideo::frameReady, this, &FFmpegWidget::setFrame, Qt::QueuedConnection);
+
+    connect(this, &FileDropZone::onFileDropped, this, [this](const QStringList& paths) {
+        if (paths.size() > 0) {
+            setUrl(paths[0]);
+            play();
+        }
+        });
 }
 
 FFmpegWidget::~FFmpegWidget() {
@@ -171,30 +177,5 @@ void FFmpegWidget::paintEvent(QPaintEvent * event) {
         int x = (width() - frame.width()) / 2;
         int y = (height() - frame.height()) / 2;
         painter.drawImage(x, y, frame);
-    }
-}
-
-void FFmpegWidget::dragEnterEvent(QDragEnterEvent* event) {
-    const QMimeData* mimeData = event->mimeData();
-    if (mimeData->hasUrls() || mimeData->hasText()) {
-        event->acceptProposedAction();
-    }
-}
-
-void FFmpegWidget::dropEvent(QDropEvent* event) {
-    const QMimeData* mimeData = event->mimeData();
-    if (mimeData->hasUrls() || mimeData->hasText()) {
-        QList<QUrl> urlList = mimeData->urls();
-        auto text = mimeData->text();
-        if (urlList.size() > 0) {
-            QString url = urlList.at(0).toLocalFile();
-            stop();
-            setUrl(url);
-            play();
-        } else if (!text.isEmpty()) {
-            stop();
-            setUrl(text);
-            play();
-        }
     }
 }

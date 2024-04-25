@@ -109,8 +109,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="CommonConfigDialog.cpp" />
+    <ClCompile Include="components\CommonConfigDialog.cpp" />
     <ClCompile Include="components\DraggableZone.cpp" />
+    <ClCompile Include="components\FileDropZone.cpp" />
     <ClCompile Include="ffmpeg/FFmpegWidget.cpp" />
     <ClCompile Include="components/ImageLabel.cpp" />
     <ClCompile Include="ffmpeg\FFmpegInputDevice.cpp" />
@@ -120,12 +121,13 @@
     <QtUic Include="form/LoginPanel.ui" />
     <QtUic Include="form/PostLiveClient.ui" />
     <QtMoc Include="PostLiveClient.h" />
-    <QtMoc Include="CommonConfigDialog.h" />
     <QtMoc Include="ffmpeg/FFmpegVideo.h" />
     <QtMoc Include="ffmpeg/FFmpegWidget.h" />
     <QtMoc Include="components\DraggableZone.h" />
     <QtMoc Include="LoginPanel.h" />
     <QtMoc Include="components/ImageLabel.h" />
+    <QtMoc Include="components\CommonConfigDialog.h" />
+    <QtMoc Include="components\FileDropZone.h" />
     <ClCompile Include="ffmpeg/FFmpegVideo.cpp" />
     <ClCompile Include="PostLiveClient.cpp" />
     <ClCompile Include="main.cpp" />

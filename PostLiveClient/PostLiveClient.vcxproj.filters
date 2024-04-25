@@ -27,6 +27,9 @@
     <Filter Include="utils">
       <UniqueIdentifier>{8ff14475-2bca-4c6c-a2ab-4e6eaa0a25d5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="components">
+      <UniqueIdentifier>{e7fdcbe7-229c-4331-9a9a-e9fa1161433c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="PostLiveClient.qrc">
@@ -49,15 +52,6 @@
     <ClCompile Include="ffmpeg/FFmpegWidget.cpp">
       <Filter>ffmpeg</Filter>
     </ClCompile>
-    <ClCompile Include="CommonConfigDialog.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="components\DraggableZone.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="components/ImageLabel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="LoginPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -66,6 +60,18 @@
     </ClCompile>
     <ClCompile Include="ffmpeg\FFmpegInputDevice.cpp">
       <Filter>ffmpeg</Filter>
+    </ClCompile>
+    <ClCompile Include="components\DraggableZone.cpp">
+      <Filter>components</Filter>
+    </ClCompile>
+    <ClCompile Include="components/ImageLabel.cpp">
+      <Filter>components</Filter>
+    </ClCompile>
+    <ClCompile Include="components\FileDropZone.cpp">
+      <Filter>components</Filter>
+    </ClCompile>
+    <ClCompile Include="components\CommonConfigDialog.cpp">
+      <Filter>components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -89,6 +95,12 @@
     <ClInclude Include="ffmpeg\FFmpegInputDevice.h">
       <Filter>ffmpeg</Filter>
     </ClInclude>
+    <ClInclude Include="components\FileDropZone.h">
+      <Filter>components</Filter>
+    </ClInclude>
+    <ClInclude Include="components\CommonConfigDialog.h">
+      <Filter>components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="ffmpeg/FFmpegVideo.h">
@@ -97,17 +109,14 @@
     <QtMoc Include="ffmpeg/FFmpegWidget.h">
       <Filter>ffmpeg</Filter>
     </QtMoc>
-    <QtMoc Include="CommonConfigDialog.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
-    <QtMoc Include="components\DraggableZone.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
     <QtMoc Include="LoginPanel.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="components\DraggableZone.h">
+      <Filter>components</Filter>
+    </QtMoc>
     <QtMoc Include="components/ImageLabel.h">
-      <Filter>Header Files</Filter>
+      <Filter>components</Filter>
     </QtMoc>
   </ItemGroup>
 </Project>
