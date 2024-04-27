@@ -26,6 +26,14 @@ PostLiveClient::PostLiveClient(QWidget* parent)
         ui->ffmpegWidget->play();
         });
 
+    connect(ui->action_Play, &QAction::triggered, [this] {
+        ui->ffmpegWidget->play();
+        });
+
+    connect(ui->action_Stop, &QAction::triggered, [this] {
+        ui->ffmpegWidget->stop();
+        });
+
     FFmpegInputDevice::updateInputDeviceList();
     auto deviceList = FFmpegInputDevice::filterVideoDevices();
 

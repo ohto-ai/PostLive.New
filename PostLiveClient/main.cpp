@@ -6,6 +6,9 @@
 #endif
 
 #include <QtWidgets/QApplication>
+#include <QSplashScreen>
+#include <QMovie>
+#include <QDesktopWidget>
 
 int main(int argc, char* argv[]) {
     QApplication a(argc, argv);
@@ -20,7 +23,18 @@ int main(int argc, char* argv[]) {
         return 0;
     }
 
+    QSplashScreen splash;
+    QMovie movie(":/main/res/splash.gif");
+
+    QObject::connect(&movie, &QMovie::frameChanged, &splash, [&]() {
+        splash.setPixmap(movie.currentPixmap());
+        });
+    movie.start();
+    splash.show();
+    splash.showMessage(QObject::tr("Loading..."), Qt::AlignCenter, Qt::white);
+
     PostLiveClient w;
+    splash.finish(&w);
     w.show();
     return a.exec();
 }

@@ -518,30 +518,18 @@ QPushButton:enabled:pressed {
     </property>
     <addaction name="action_Server"/>
    </widget>
+   <widget class="QMenu" name="menu_Control">
+    <property name="title">
+     <string>&amp;Control</string>
+    </property>
+    <addaction name="action_Play"/>
+    <addaction name="action_Stop"/>
+   </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_Config"/>
+   <addaction name="menu_Control"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
-  <action name="action_Play">
-   <property name="text">
-    <string>Play</string>
-   </property>
-  </action>
-  <action name="action_Pause">
-   <property name="text">
-    <string>Pause</string>
-   </property>
-  </action>
-  <action name="actionTest">
-   <property name="text">
-    <string>Test</string>
-   </property>
-  </action>
-  <action name="action123">
-   <property name="text">
-    <string>123</string>
-   </property>
-  </action>
   <action name="actionFile">
    <property name="text">
     <string>File</string>
@@ -550,6 +538,16 @@ QPushButton:enabled:pressed {
   <action name="action_Server">
    <property name="text">
     <string>&amp;Server</string>
+   </property>
+  </action>
+  <action name="action_Play">
+   <property name="text">
+    <string>&amp;Play</string>
+   </property>
+  </action>
+  <action name="action_Stop">
+   <property name="text">
+    <string>&amp;Stop</string>
    </property>
   </action>
  </widget>

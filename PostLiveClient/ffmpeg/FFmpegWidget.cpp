@@ -74,6 +74,11 @@ FFmpegWidget::FFmpegWidget(QWidget *parent)
             play();
         }
         });
+
+    connect(&movie, &QMovie::frameChanged, this, [this]() {
+        frameImage = movie.currentImage().scaled(width(), height(), Qt::KeepAspectRatio);
+        update();
+        });
 }
 
 FFmpegWidget::~FFmpegWidget() {
@@ -110,13 +115,23 @@ void FFmpegWidget::setFrame(const QImage & frame) {
         lastTime = currentTime;
     }
 
-    frameImage = frame;
+    frameAvailable = true;
+
+    if (option_changeSizeFromVideo) {
+        frameImage = frame;
+    }
+    else {
+        frameImage = frame.scaled(width(), height(), Qt::KeepAspectRatio);
+    }
+
+    movie.stop();
     updateStatusBar();
     update();
 }
 
 void FFmpegWidget::clearFrame() {
-    frameImage = QImage();
+    frameAvailable = false;
+    movie.start();
     updateStatusBar();
     update();
 }
@@ -126,11 +141,11 @@ void FFmpegWidget::updateStatusBar() {
     if (parentStatusBar) {
         // FPS and error
         QString status;
-        if (option_displayFPS) {
-            status += QString::asprintf("Decode FPS: %4.1f ", decodeFPS);
-        }
 
-        if (ffmpegVideo != nullptr && ffmpegVideo->isRunning()) {
+        if (ffmpegVideo != nullptr && frameAvailable) {
+            if (option_displayFPS) {
+                status += QString::asprintf("Decode FPS: %4.1f ", decodeFPS);
+            }
             if (videoStream != nullptr) {
                 status += QString(" | Size: %1x%2").arg(frameImage.width()).arg(frameImage.height());
             }
@@ -155,27 +170,15 @@ void FFmpegWidget::updateStatusBar() {
 void FFmpegWidget::paintEvent(QPaintEvent * event) {
     QPainter painter(this);
 
-    if (frameImage.isNull()) {
-        // 中央绘制Logo: OhtoAi Player
+    int x = (width() - frameImage.width()) / 2;
+    int y = (height() - frameImage.height()) / 2;
+    painter.drawImage(x, y, frameImage);
+
+    if (!frameAvailable) {
         QFont font = painter.font();
         font.setPointSize(20);
         painter.setFont(font);
         painter.setPen(Qt::white);
-        painter.drawText(rect(), Qt::AlignCenter, "OhtoAi Player");
-        return;
-    }
-
-    // 居中绘制
-    if (option_changeSizeFromVideo) {
-        int x = (width() - frameImage.width()) / 2;
-        int y = (height() - frameImage.height()) / 2;
-        painter.drawImage(x, y, frameImage);
-    }
-    else {
-        // 按窗口大小 保持比例绘制
-        auto frame = frameImage.scaled(width(), height(), Qt::KeepAspectRatio);
-        int x = (width() - frame.width()) / 2;
-        int y = (height() - frame.height()) / 2;
-        painter.drawImage(x, y, frame);
+        painter.drawText(rect(), Qt::AlignTop | Qt::AlignHCenter, "OhtoAi Player");
     }
 }

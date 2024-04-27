@@ -12,6 +12,11 @@ LoginPanel::LoginPanel(QWidget *parent)
 
     ui->closeButton->setIcon(QApplication::style()->standardIcon(QStyle::SP_TitleBarCloseButton));
     connect(ui->loginButton, &QPushButton::clicked, this, &LoginPanel::login);
+
+#ifdef _DEBUG
+    ui->inputAccount->setText("username");
+    ui->inputPassword->setText("password");
+#endif
 }
 
 LoginPanel::~LoginPanel()

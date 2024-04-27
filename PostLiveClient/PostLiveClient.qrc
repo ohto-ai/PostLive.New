@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/main">
+        <file>res/splash.gif</file>
     </qresource>
     <qresource prefix="/login">
         <file>res/genshin.jpg</file>

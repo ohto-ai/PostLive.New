@@ -1,9 +1,10 @@
 #pragma once
 
+#include "components/FileDropZone.h"
 #include <QWidget>
 #include <QImage>
 #include <memory>
-#include "components/FileDropZone.h"
+#include <QMovie>
 
 class FFmpegWidget : public FileDropZone
 {
@@ -41,4 +42,7 @@ private:
     const struct AVStream* videoStream = nullptr;
     QImage frameImage;
     qreal decodeFPS = 0.0;
+
+    bool frameAvailable = false;
+    QMovie movie{ ":/main/res/splash.gif" };
 };
