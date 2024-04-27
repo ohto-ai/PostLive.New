@@ -18,8 +18,11 @@ extern "C" {
 #include <libavutil/imgutils.h>
 }
 
-AVPixelFormat ConvertDeprecatedFormat(enum AVPixelFormat format) {
+static AVPixelFormat ConvertDeprecatedFormat(enum AVPixelFormat format) {
     switch (format) {
+    case AV_PIX_FMT_YUVJ411P:
+        return AV_PIX_FMT_YUV411P;
+        break;
     case AV_PIX_FMT_YUVJ420P:
         return AV_PIX_FMT_YUV420P;
         break;
