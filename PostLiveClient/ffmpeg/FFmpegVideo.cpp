@@ -18,6 +18,26 @@ extern "C" {
 #include <libavutil/imgutils.h>
 }
 
+AVPixelFormat ConvertDeprecatedFormat(enum AVPixelFormat format) {
+    switch (format) {
+    case AV_PIX_FMT_YUVJ420P:
+        return AV_PIX_FMT_YUV420P;
+        break;
+    case AV_PIX_FMT_YUVJ422P:
+        return AV_PIX_FMT_YUV422P;
+        break;
+    case AV_PIX_FMT_YUVJ444P:
+        return AV_PIX_FMT_YUV444P;
+        break;
+    case AV_PIX_FMT_YUVJ440P:
+        return AV_PIX_FMT_YUV440P;
+        break;
+    default:
+        return format;
+        break;
+    }
+}
+
 FFmpegVideo::FFmpegVideo(QObject* parent) : QThread{ parent } {
 }
 
@@ -81,40 +101,43 @@ bool FFmpegVideo::open() {
         av_dump_format(formatContext, 0, url.toUtf8().constData(), 0);
 #endif // _DEBUG
 
-        //=================================  查找解码器 ===================================//
         inputVideoCodecPara = formatContext->streams[inputVideoStreamIndex]->codecpar;
         inputVideoCodec = avcodec_find_decoder(inputVideoCodecPara->codec_id);
         if (inputVideoCodec == nullptr) {
             error(-1, "Cannot find decoder.");
             break;
         }
-        //根据解码器参数来创建解码器内容
+
+        // allocate codec context
         inputVideoCodecContext = avcodec_alloc_context3(inputVideoCodec);
-        ec = avcodec_parameters_to_context(inputVideoCodecContext, inputVideoCodecPara);
         if (inputVideoCodecContext == nullptr) {
             error(-1, "Cannot allocate codec context.");
             break;
         }
+        ec = avcodec_parameters_to_context(inputVideoCodecContext, inputVideoCodecPara);
         if (ec < 0) {
             postFFmpegError(ec);
             break;
         }
 
-        //================================  打开解码器 ===================================//
-        if ((ec = avcodec_open2(inputVideoCodecContext, inputVideoCodec, NULL)) < 0) { // 具体采用什么解码器ffmpeg经过封装 我们无须知道
+        // open codec
+        ec = avcodec_open2(inputVideoCodecContext, inputVideoCodec, nullptr);
+        if (ec < 0) {
             postFFmpegError(ec);
             break;
         }
 
-        int w = inputVideoCodecContext->width;//视频宽度
-        int h = inputVideoCodecContext->height;//视频高度
-
-        //================================ 设置数据转换参数 ================================//
+        // set up sws context
+        int w = inputVideoCodecContext->width;
+        int h = inputVideoCodecContext->height;
         img_ctx = sws_getContext(
-            w, h, inputVideoCodecContext->pix_fmt, //源地址长宽以及数据格式
-            w, h, AV_PIX_FMT_RGB32,  //目的地址长宽以及数据格式
-            SWS_BICUBIC, NULL, NULL, NULL);                       //算法类型  AV_PIX_FMT_YUVJ420P   AV_PIX_FMT_BGR24
-
+            w, h, ConvertDeprecatedFormat(inputVideoCodecContext->pix_fmt), // 源地址长宽以及数据格式
+            w, h, AV_PIX_FMT_RGB32, // 目的地址长宽以及数据格式
+            SWS_BICUBIC, nullptr, nullptr, nullptr); // 算法类型  AV_PIX_FMT_YUVJ420P   AV_PIX_FMT_BGR24
+        if (img_ctx == nullptr) {
+            error(-1, "Cannot create sws context.");
+            break;
+        }
 
         emit streamReady(formatContext->streams[inputVideoStreamIndex]);
         return true;
@@ -135,7 +158,6 @@ void FFmpegVideo::run() {
         int w = inputVideoCodecContext->width;//视频宽度
         int h = inputVideoCodecContext->height;//视频高度
 
-        //=========================== 分配AVPacket结构体 ===============================//
         AVPacket* packet = nullptr;
         uint8_t* out_buffer = nullptr;
         AVFrame* yuvFrame = nullptr;
