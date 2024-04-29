@@ -2,16 +2,14 @@
 #include <QDragEnterEvent>
 #include <QMimeData>
 
-FileDropZone::FileDropZone(QWidget *parent)
-    : QWidget(parent)
-{
+FileDropZone::FileDropZone(QWidget* parent)
+    : QWidget(parent) {
     setAcceptDrops(true);
 }
 
-FileDropZone::~FileDropZone()
-{}
+FileDropZone::~FileDropZone() {}
 
-void FileDropZone::dropEvent(QDropEvent * event) {
+void FileDropZone::dropEvent(QDropEvent* event) {
     const QMimeData* mimeData = event->mimeData();
     if (mimeData->hasUrls()) {
         QList<QUrl> urlList = mimeData->urls();
@@ -28,5 +26,3 @@ void FileDropZone::dragEnterEvent(QDragEnterEvent* event) {
         event->acceptProposedAction();
     }
 }
-
-

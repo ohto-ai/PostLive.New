@@ -3,7 +3,7 @@
 
 class FFmpegVideo : public QThread {
     Q_OBJECT
-    friend class FFmpegAudio;
+        friend class FFmpegAudio;
     friend class FFmpegWidget;
 public:
     FFmpegVideo(QObject* parent = nullptr);
@@ -24,16 +24,13 @@ signals:
 private:
     void postFFmpegError(int error);
 
-    QString url;
-    const struct FFmpegInputDevice* device = nullptr;
-
-    struct AVFormatContext* formatContext = nullptr;
+    QString inputUrl;
+    const struct FFmpegInputDevice* inputDevice = nullptr;
+    struct AVFormatContext* inputFormatContext = nullptr;
     struct AVCodecContext* inputVideoCodecContext = nullptr;
-    int inputVideoStreamIndex = -1;
     struct AVCodecParameters* inputVideoCodecPara = nullptr;
     const struct AVCodec* inputVideoCodec = nullptr;
-
+    int inputVideoStreamIndex = -1;
+    std::mutex inputDeviceMutex;
     struct SwsContext* img_ctx = nullptr;
-
-    std::mutex deviceMutex;
 };

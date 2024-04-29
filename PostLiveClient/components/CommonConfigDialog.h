@@ -3,7 +3,6 @@
 #include <QDialog>
 #include <QVariant>
 
-
 struct CommonConfigItem {
     QString key;
     QVariant value;

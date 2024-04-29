@@ -6,7 +6,7 @@
 #include <QMouseEvent>
 
 extern "C" {
-    #include <libavdevice/avdevice.h>
+#include <libavdevice/avdevice.h>
 }
 #include <QFileDialog>
 #include <QDebug>
@@ -55,7 +55,6 @@ PostLiveClient::PostLiveClient(QWidget* parent)
     }
 
     connect(ui->action_Server, &QAction::triggered, [this] {
-
         CommonConfigItemList().addBool("key_bool", "Enable", "", true)
             .addInt("key_int", "Port", "", 8080)
             .addDouble("key_double", "Double", "", 3.14)
@@ -70,7 +69,6 @@ PostLiveClient::PostLiveClient(QWidget* parent)
 PostLiveClient::~PostLiveClient() {
     delete ui;
 }
-
 
 void PostLiveClient::mousePressEvent(QMouseEvent* event) {
     if (event->button() == Qt::LeftButton) {

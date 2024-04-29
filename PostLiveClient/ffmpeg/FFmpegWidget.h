@@ -6,12 +6,11 @@
 #include <memory>
 #include <QMovie>
 
-class FFmpegWidget : public FileDropZone
-{
+class FFmpegWidget : public FileDropZone {
     Q_OBJECT
 
 public:
-    FFmpegWidget(QWidget *parent = nullptr);
+    FFmpegWidget(QWidget* parent = nullptr);
     ~FFmpegWidget();
 
 public:

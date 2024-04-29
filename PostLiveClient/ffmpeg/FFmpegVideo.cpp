@@ -41,34 +41,33 @@ static AVPixelFormat ConvertDeprecatedFormat(enum AVPixelFormat format) {
     }
 }
 
-FFmpegVideo::FFmpegVideo(QObject* parent) : QThread{ parent } {
-}
+FFmpegVideo::FFmpegVideo(QObject* parent) : QThread{ parent } {}
 
 FFmpegVideo::~FFmpegVideo() {
     stop();
 }
 
 void FFmpegVideo::setUrl(QString url) {
-    std::lock_guard lock{ deviceMutex };
-    this->url = url;
-    this->device = nullptr;
+    std::lock_guard lock{ inputDeviceMutex };
+    this->inputUrl = url;
+    this->inputDevice = nullptr;
 }
 
 bool FFmpegVideo::setInputDevice(const FFmpegInputDevice* device) {
-    std::lock_guard lock{ deviceMutex };
+    std::lock_guard lock{ inputDeviceMutex };
     if (device == nullptr || std::find(device->media_types.begin(), device->media_types.end(), AVMEDIA_TYPE_VIDEO) == device->media_types.end()) {
         return false;
     }
-    this->device = device;
-    this->url = device->streamUrls[AVMEDIA_TYPE_VIDEO].c_str();
+    this->inputDevice = device;
+    this->inputUrl = device->streamUrls[AVMEDIA_TYPE_VIDEO].c_str();
     return true;
 }
 
 void FFmpegVideo::clean() {
     avcodec_free_context(&inputVideoCodecContext);
-    avformat_close_input(&formatContext);
-    avformat_free_context(formatContext);
-    formatContext = nullptr;
+    avformat_close_input(&inputFormatContext);
+    avformat_free_context(inputFormatContext);
+    inputFormatContext = nullptr;
     inputVideoCodecContext = nullptr;
     inputVideoStreamIndex = -1;
     inputVideoCodecPara = nullptr;
@@ -79,21 +78,21 @@ void FFmpegVideo::clean() {
 bool FFmpegVideo::open() {
     do {
         int ec = 0;
-        formatContext = avformat_alloc_context();
-        ec = avformat_open_input(&formatContext, url.toUtf8().constData(), device != nullptr ? device->input_format : nullptr, nullptr);
+        inputFormatContext = avformat_alloc_context();
+        ec = avformat_open_input(&inputFormatContext, inputUrl.toUtf8().constData(), inputDevice != nullptr ? inputDevice->input_format : nullptr, nullptr);
         if (ec < 0) {
             postFFmpegError(ec);
             break;
         }
 
         //=================================== 获取视频流信息 ===================================//
-        ec = avformat_find_stream_info(formatContext, nullptr);
+        ec = avformat_find_stream_info(inputFormatContext, nullptr);
         if (ec < 0) {
             postFFmpegError(ec);
             break;
         }
 
-        inputVideoStreamIndex = av_find_best_stream(formatContext, AVMEDIA_TYPE_VIDEO, -1, -1, nullptr, 0);
+        inputVideoStreamIndex = av_find_best_stream(inputFormatContext, AVMEDIA_TYPE_VIDEO, -1, -1, nullptr, 0);
         if (inputVideoStreamIndex < 0) {
             postFFmpegError(inputVideoStreamIndex);
             break;
@@ -101,10 +100,10 @@ bool FFmpegVideo::open() {
 
 #ifdef _DEBUG
         //打印输入和输出信息：长度 比特率 流格式等
-        av_dump_format(formatContext, 0, url.toUtf8().constData(), 0);
+        av_dump_format(inputFormatContext, 0, inputUrl.toUtf8().constData(), 0);
 #endif // _DEBUG
 
-        inputVideoCodecPara = formatContext->streams[inputVideoStreamIndex]->codecpar;
+        inputVideoCodecPara = inputFormatContext->streams[inputVideoStreamIndex]->codecpar;
         inputVideoCodec = avcodec_find_decoder(inputVideoCodecPara->codec_id);
         if (inputVideoCodec == nullptr) {
             error(-1, "Cannot find decoder.");
@@ -142,7 +141,7 @@ bool FFmpegVideo::open() {
             break;
         }
 
-        emit streamReady(formatContext->streams[inputVideoStreamIndex]);
+        emit streamReady(inputFormatContext->streams[inputVideoStreamIndex]);
         return true;
     } while (false);
     return false;
@@ -153,7 +152,6 @@ void FFmpegVideo::run() {
         clean();
         });
     do {
-
         if (!open()) {
             break;
         }
@@ -186,11 +184,11 @@ void FFmpegVideo::run() {
             w, h, 1);
 
         // 根据视频帧率计算每帧间隔时间
-        auto target_frame_duration = std::chrono::milliseconds(static_cast<long>(1000 / av_q2d(formatContext->streams[inputVideoStreamIndex]->r_frame_rate)));
+        auto target_frame_duration = std::chrono::milliseconds(static_cast<long>(1000 / av_q2d(inputFormatContext->streams[inputVideoStreamIndex]->r_frame_rate)));
 
         auto start_time = std::chrono::steady_clock::now();
 
-        while (!isInterruptionRequested() && av_read_frame(formatContext, packet) >= 0) { //读取的是一帧视频  数据存入一个AVPacket的结构中
+        while (!isInterruptionRequested() && av_read_frame(inputFormatContext, packet) >= 0) { //读取的是一帧视频  数据存入一个AVPacket的结构中
             if (packet->stream_index == inputVideoStreamIndex) {
                 if (avcodec_send_packet(inputVideoCodecContext, packet) >= 0) {
                     while (avcodec_receive_frame(inputVideoCodecContext, yuvFrame) >= 0) {

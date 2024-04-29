@@ -3,18 +3,17 @@
 #include <QLabel>
 #include <QPixmap>
 
-class ImageLabel  : public QLabel
-{
+class ImageLabel : public QLabel {
     Q_OBJECT
 
-    Q_PROPERTY(bool covered READ covered WRITE setCovered)
+        Q_PROPERTY(bool covered READ covered WRITE setCovered)
 
 public:
-    ImageLabel(QWidget *parent);
+    ImageLabel(QWidget* parent);
     ~ImageLabel();
 
-    void resizeEvent(QResizeEvent *event) override;
-    void paintEvent(QPaintEvent *event) override;
+    void resizeEvent(QResizeEvent* event) override;
+    void paintEvent(QPaintEvent* event) override;
 
     int margin() const;
     bool covered() const;

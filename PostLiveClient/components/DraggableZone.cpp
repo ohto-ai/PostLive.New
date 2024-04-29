@@ -1,16 +1,13 @@
 #include "DraggableZone.h"
 #include <QMouseEvent>
 
-DraggableZone::DraggableZone(QWidget *parent)
-    : QWidget(parent)
-{}
+DraggableZone::DraggableZone(QWidget* parent)
+    : QWidget(parent) {}
 
-DraggableZone::~DraggableZone()
-{}
+DraggableZone::~DraggableZone() {}
 
 void DraggableZone::mousePressEvent(QMouseEvent* event) {
     if (event->button() == Qt::LeftButton) {
-
         // find top widget
         topWidget = this;
         while (topWidget->parentWidget() != nullptr) {

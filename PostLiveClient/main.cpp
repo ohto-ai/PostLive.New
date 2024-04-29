@@ -2,7 +2,7 @@
 #include "LoginPanel.h"
 
 #if defined(Q_OS_WINDOWS)
-    #include "components/WinDbgHelper.h"
+#include "components/WinDbgHelper.h"
 #endif
 
 #include <QtWidgets/QApplication>

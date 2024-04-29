@@ -12,12 +12,11 @@ extern "C" {
 #include <libavformat/avformat.h>
 }
 
-FFmpegWidget::FFmpegWidget(QWidget *parent)
-    : FileDropZone(parent)
-{
+FFmpegWidget::FFmpegWidget(QWidget* parent)
+    : FileDropZone(parent) {
     ffmpegVideo = new FFmpegVideo(this);
 #ifdef _DEBUG
-    option_displayFPS= true;
+    option_displayFPS = true;
 #endif
 
     // 设置黑色背景
@@ -42,7 +41,7 @@ FFmpegWidget::FFmpegWidget(QWidget *parent)
         if (frameImage.isNull()) {
             clearFrame();
         }
-    });
+        });
 
     connect(ffmpegVideo, &FFmpegVideo::streamReady, this, [this](const AVStream* stream) {
         if (stream->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
@@ -63,7 +62,7 @@ FFmpegWidget::FFmpegWidget(QWidget *parent)
             ffmpegVideoErrorCode = 0;
             ffmpegVideoErrorString.clear();
             update();
-        });
+            });
         }, Qt::QueuedConnection);
 
     connect(ffmpegVideo, &FFmpegVideo::frameReady, this, &FFmpegWidget::setFrame, Qt::QueuedConnection);
@@ -85,7 +84,7 @@ FFmpegWidget::~FFmpegWidget() {
     delete ffmpegVideo;
 }
 
-void FFmpegWidget::setUrl(const QString & url) {
+void FFmpegWidget::setUrl(const QString& url) {
     ffmpegVideo->setUrl(url);
 }
 
@@ -102,7 +101,7 @@ void FFmpegWidget::stop() {
     clearFrame();
 }
 
-void FFmpegWidget::setFrame(const QImage & frame) {
+void FFmpegWidget::setFrame(const QImage& frame) {
     // 计算发送FPS
     static int frameCount = 0;
     static qint64 lastTime = QDateTime::currentMSecsSinceEpoch();
@@ -137,7 +136,6 @@ void FFmpegWidget::clearFrame() {
 }
 
 void FFmpegWidget::updateStatusBar() {
-
     if (parentStatusBar) {
         // FPS and error
         QString status;
@@ -149,14 +147,14 @@ void FFmpegWidget::updateStatusBar() {
             if (videoStream != nullptr) {
                 status += QString(" | Size: %1x%2").arg(frameImage.width()).arg(frameImage.height());
             }
-            if (!ffmpegVideo->url.isEmpty()) {
+            if (!ffmpegVideo->inputUrl.isEmpty()) {
                 constexpr size_t MaxUrlLength = 50;
                 constexpr size_t RightReserved = 8;
-                if (ffmpegVideo->url.size() > MaxUrlLength) {
-                    status += QString(" | URL: %1...%2").arg(ffmpegVideo->url.left(MaxUrlLength - RightReserved - 3), ffmpegVideo->url.right(RightReserved));
+                if (ffmpegVideo->inputUrl.size() > MaxUrlLength) {
+                    status += QString(" | URL: %1...%2").arg(ffmpegVideo->inputUrl.left(MaxUrlLength - RightReserved - 3), ffmpegVideo->inputUrl.right(RightReserved));
                 }
                 else {
-                    status += QString(" | URL: %1").arg(ffmpegVideo->url);
+                    status += QString(" | URL: %1").arg(ffmpegVideo->inputUrl);
                 }
             }
         }
@@ -167,7 +165,7 @@ void FFmpegWidget::updateStatusBar() {
     }
 }
 
-void FFmpegWidget::paintEvent(QPaintEvent * event) {
+void FFmpegWidget::paintEvent(QPaintEvent* event) {
     QPainter painter(this);
 
     int x = (width() - frameImage.width()) / 2;

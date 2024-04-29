@@ -9,12 +9,11 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class PostLiveClientClass; };
 QT_END_NAMESPACE
 
-class PostLiveClient : public QMainWindow
-{
+class PostLiveClient : public QMainWindow {
     Q_OBJECT
 
 public:
-    PostLiveClient(QWidget *parent = nullptr);
+    PostLiveClient(QWidget* parent = nullptr);
     ~PostLiveClient();
 
 public:
@@ -24,7 +23,7 @@ public:
     void closeEvent(QCloseEvent* event) override;
 
 private:
-    Ui::PostLiveClientClass *ui;
+    Ui::PostLiveClientClass* ui;
     QPoint m_dragPosition;
     std::vector<struct FFmpegInputDevice> m_gdiDevices;
 };

@@ -2,13 +2,11 @@
 #include <QPainter>
 
 ImageLabel::ImageLabel(QWidget* parent)
-    : QLabel(parent) {
-}
+    : QLabel(parent) {}
 
-ImageLabel::~ImageLabel()
-{}
+ImageLabel::~ImageLabel() {}
 
-void ImageLabel::resizeEvent(QResizeEvent * event) {
+void ImageLabel::resizeEvent(QResizeEvent* event) {
     QWidget::resizeEvent(event);
     if (m_pixmap.isNull()) {
         return;
@@ -79,36 +77,42 @@ void ImageLabel::updateScaledPixmap() {
         return;
     }
 
-
     if (m_scaledContents) {
         if (m_covered) {
             // 保持图片比例，使图片完全覆盖label
             if (pixmapSize.width() * labelSize.height() > pixmapSize.height() * labelSize.width()) {
                 m_scaledPixmap = m_pixmap.scaledToHeight(labelSize.height(), Qt::SmoothTransformation);
-            } else {
+            }
+            else {
                 m_scaledPixmap = m_pixmap.scaledToWidth(labelSize.width(), Qt::SmoothTransformation);
             }
-        } else {
+        }
+        else {
             // 保持图片比例，使图片尽可能大
             m_scaledPixmap = m_pixmap.scaled(labelSize, Qt::KeepAspectRatio);
         }
-    } else {
+    }
+    else {
         m_scaledPixmap = m_pixmap;
     }
 
     if (m_alignment & Qt::AlignLeft) {
         m_pixmapPos.setX(0);
-    } else if (m_alignment & Qt::AlignRight) {
+    }
+    else if (m_alignment & Qt::AlignRight) {
         m_pixmapPos.setX(labelSize.width() - m_scaledPixmap.width());
-    } else {
+    }
+    else {
         m_pixmapPos.setX((labelSize.width() - m_scaledPixmap.width()) / 2);
     }
 
     if (m_alignment & Qt::AlignTop) {
         m_pixmapPos.setY(0);
-    } else if (m_alignment & Qt::AlignBottom) {
+    }
+    else if (m_alignment & Qt::AlignBottom) {
         m_pixmapPos.setY(labelSize.height() - m_scaledPixmap.height());
-    } else {
+    }
+    else {
         m_pixmapPos.setY((labelSize.height() - m_scaledPixmap.height()) / 2);
     }
 
@@ -116,7 +120,6 @@ void ImageLabel::updateScaledPixmap() {
 
     update();
 }
-
 
 void ImageLabel::setPixmap(const QPixmap& pixmap) {
     m_pixmap = pixmap;

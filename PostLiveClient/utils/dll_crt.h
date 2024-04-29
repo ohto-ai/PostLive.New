@@ -94,7 +94,7 @@ namespace ohtoai {
 
                 static lib_ self() {
 #if defined(_OHTOAI_WINDOWS_PLATFORM_)
-                    return lib_(GetModuleHandle(NULL));
+                    return lib_(GetModuleHandle(nullptr));
 #elif defined(_OHTOAI_LINUX_PLATFORM_)
                     Dl_info info;
                     if (dladdr((void*)self, &info)) {

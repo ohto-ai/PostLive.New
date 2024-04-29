@@ -2,12 +2,11 @@
 
 #include <QWidget>
 
-class FileDropZone  : public QWidget
-{
+class FileDropZone : public QWidget {
     Q_OBJECT
 
 public:
-    FileDropZone(QWidget *parent = nullptr);
+    FileDropZone(QWidget* parent = nullptr);
     ~FileDropZone();
 
 signals:

@@ -21,9 +21,7 @@ void FFmpegInputDevice::updateInputDeviceList() {
     return updateInputDeviceList(inputDeviceFormats);
 }
 
-
 void FFmpegInputDevice::updateInputDeviceList(const std::vector<std::string>& formats) {
-
     std::call_once(registerFlag, avdevice_register_all);
     std::lock_guard lock{ devicesMutex };
     devices.clear();
@@ -109,4 +107,3 @@ FFmpegInputDevice FFmpegInputDevice::make_gdi_device(std::string title) {
     }
     return device;
 }
-

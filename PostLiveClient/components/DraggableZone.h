@@ -2,12 +2,11 @@
 
 #include <QWidget>
 
-class DraggableZone  : public QWidget
-{
+class DraggableZone : public QWidget {
     Q_OBJECT
 
 public:
-    DraggableZone(QWidget *parent);
+    DraggableZone(QWidget* parent);
     ~DraggableZone();
 
 public:
