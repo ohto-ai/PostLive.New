@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Source Files">
@@ -95,12 +95,6 @@
     <ClInclude Include="ffmpeg\FFmpegInputDevice.h">
       <Filter>ffmpeg</Filter>
     </ClInclude>
-    <ClInclude Include="components\FileDropZone.h">
-      <Filter>components</Filter>
-    </ClInclude>
-    <ClInclude Include="components\CommonConfigDialog.h">
-      <Filter>components</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="ffmpeg/FFmpegVideo.h">
@@ -116,6 +110,12 @@
       <Filter>components</Filter>
     </QtMoc>
     <QtMoc Include="components/ImageLabel.h">
+      <Filter>components</Filter>
+    </QtMoc>
+    <QtMoc Include="components\CommonConfigDialog.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="components\FileDropZone.h">
       <Filter>components</Filter>
     </QtMoc>
   </ItemGroup>

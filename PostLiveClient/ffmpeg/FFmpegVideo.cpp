@@ -67,6 +67,7 @@ void FFmpegVideo::clean() {
     avcodec_free_context(&inputVideoCodecContext);
     avformat_close_input(&inputFormatContext);
     avformat_free_context(inputFormatContext);
+    av_dict_free(&inputOptions);
     inputFormatContext = nullptr;
     inputVideoCodecContext = nullptr;
     inputVideoStreamIndex = -1;
@@ -79,7 +80,11 @@ bool FFmpegVideo::open() {
     do {
         int ec = 0;
         inputFormatContext = avformat_alloc_context();
-        ec = avformat_open_input(&inputFormatContext, inputUrl.toUtf8().constData(), inputDevice != nullptr ? inputDevice->input_format : nullptr, nullptr);
+        if (inputDevice != nullptr && inputDevice->input_format != nullptr && !strcmp(inputDevice->input_format->name, "gdigrab")) {
+            av_dict_set(&inputOptions, "probesize", "50000000", 0);
+        }
+
+        ec = avformat_open_input(&inputFormatContext, inputUrl.toUtf8().constData(), inputDevice != nullptr ? inputDevice->input_format : nullptr, &inputOptions);
         if (ec < 0) {
             postFFmpegError(ec);
             break;

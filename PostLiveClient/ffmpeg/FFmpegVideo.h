@@ -29,7 +29,9 @@ private:
     struct AVFormatContext* inputFormatContext = nullptr;
     struct AVCodecContext* inputVideoCodecContext = nullptr;
     struct AVCodecParameters* inputVideoCodecPara = nullptr;
+    struct AVDictionary* inputOptions = nullptr;
     const struct AVCodec* inputVideoCodec = nullptr;
+
     int inputVideoStreamIndex = -1;
     std::mutex inputDeviceMutex;
     struct SwsContext* img_ctx = nullptr;
