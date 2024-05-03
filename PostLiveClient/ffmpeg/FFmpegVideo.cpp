@@ -232,8 +232,6 @@ void FFmpegVideo::run() {
 void FFmpegVideo::stop() {
     requestInterruption();
     wait();
-
-    clean();
 }
 
 void FFmpegVideo::postFFmpegError(int error) {
