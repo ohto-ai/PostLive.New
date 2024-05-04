@@ -28,7 +28,6 @@ private:
     const struct FFmpegInputDevice* inputDevice = nullptr;
     struct AVFormatContext* inputFormatContext = nullptr;
     struct AVCodecContext* inputVideoCodecContext = nullptr;
-    struct AVCodecParameters* inputVideoCodecPara = nullptr;
     struct AVDictionary* inputOptions = nullptr;
     const struct AVCodec* inputVideoCodec = nullptr;
 

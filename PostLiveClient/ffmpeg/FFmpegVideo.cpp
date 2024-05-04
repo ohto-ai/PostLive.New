@@ -71,13 +71,15 @@ void FFmpegVideo::clean() {
     inputFormatContext = nullptr;
     inputVideoCodecContext = nullptr;
     inputVideoStreamIndex = -1;
-    inputVideoCodecPara = nullptr;
     inputVideoCodec = nullptr;
     img_ctx = nullptr;
 }
 
 bool FFmpegVideo::open() {
     do {
+        if (inputUrl.isEmpty()) {
+            break;
+        }
         int ec = 0;
         inputFormatContext = avformat_alloc_context();
         if (inputDevice != nullptr && inputDevice->input_format != nullptr && !strcmp(inputDevice->input_format->name, "gdigrab")) {
@@ -91,13 +93,13 @@ bool FFmpegVideo::open() {
         }
 
         //=================================== 获取视频流信息 ===================================//
-        ec = avformat_find_stream_info(inputFormatContext, nullptr);
+        ec = avformat_find_stream_info(inputFormatContext, &inputOptions);
         if (ec < 0) {
             postFFmpegError(ec);
             break;
         }
 
-        inputVideoStreamIndex = av_find_best_stream(inputFormatContext, AVMEDIA_TYPE_VIDEO, -1, -1, nullptr, 0);
+        inputVideoStreamIndex = av_find_best_stream(inputFormatContext, AVMEDIA_TYPE_VIDEO, -1, -1, &inputVideoCodec, 0);
         if (inputVideoStreamIndex < 0) {
             postFFmpegError(inputVideoStreamIndex);
             break;
@@ -108,8 +110,6 @@ bool FFmpegVideo::open() {
         av_dump_format(inputFormatContext, 0, inputUrl.toUtf8().constData(), 0);
 #endif // _DEBUG
 
-        inputVideoCodecPara = inputFormatContext->streams[inputVideoStreamIndex]->codecpar;
-        inputVideoCodec = avcodec_find_decoder(inputVideoCodecPara->codec_id);
         if (inputVideoCodec == nullptr) {
             error(-1, "Cannot find decoder.");
             break;
@@ -121,7 +121,7 @@ bool FFmpegVideo::open() {
             error(-1, "Cannot allocate codec context.");
             break;
         }
-        ec = avcodec_parameters_to_context(inputVideoCodecContext, inputVideoCodecPara);
+        ec = avcodec_parameters_to_context(inputVideoCodecContext, inputFormatContext->streams[inputVideoStreamIndex]->codecpar);
         if (ec < 0) {
             postFFmpegError(ec);
             break;
