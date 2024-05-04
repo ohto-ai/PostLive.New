@@ -19,6 +19,8 @@ public:
     void play();
     void stop();
 
+    void addOption(const QString& key, const QString& value);
+
 protected slots:
     void setFrame(const QImage& frame);
     void clearFrame();

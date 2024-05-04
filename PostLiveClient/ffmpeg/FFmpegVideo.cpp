@@ -234,6 +234,11 @@ void FFmpegVideo::stop() {
     wait();
 }
 
+void FFmpegVideo::addOption(const QString& key, const QString& value) {
+    std::lock_guard lock{ inputDeviceMutex };
+    av_dict_set(&inputOptions, key.toUtf8().constData(), value.toUtf8().constData(), 0);
+}
+
 void FFmpegVideo::postFFmpegError(int error) {
     char err_msg[512];
     av_strerror(error, err_msg, sizeof(err_msg));

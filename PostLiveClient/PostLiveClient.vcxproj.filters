@@ -73,6 +73,9 @@
     <ClCompile Include="components\CommonConfigDialog.cpp">
       <Filter>components</Filter>
     </ClCompile>
+    <ClCompile Include="CameraHelper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="form/LoginPanel.ui">
@@ -94,6 +97,9 @@
     </ClInclude>
     <ClInclude Include="ffmpeg\FFmpegInputDevice.h">
       <Filter>ffmpeg</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraHelper.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -525,9 +525,15 @@ QPushButton:enabled:pressed {
     <addaction name="action_Play"/>
     <addaction name="action_Stop"/>
    </widget>
+   <widget class="QMenu" name="menuResolutions">
+    <property name="title">
+     <string>Resolutions</string>
+    </property>
+   </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_Config"/>
    <addaction name="menu_Control"/>
+   <addaction name="menuResolutions"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionFile">

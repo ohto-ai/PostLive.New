@@ -13,6 +13,7 @@ public:
     bool setInputDevice(const struct FFmpegInputDevice* device);
     void run() override;
     void stop();
+    void addOption(const QString& key, const QString& value);
 private:
     void clean();
     bool open();

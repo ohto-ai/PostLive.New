@@ -101,6 +101,10 @@ void FFmpegWidget::stop() {
     clearFrame();
 }
 
+void FFmpegWidget::addOption(const QString& key, const QString& value) {
+    ffmpegVideo->addOption(key, value);
+}
+
 void FFmpegWidget::setFrame(const QImage& frame) {
     // 计算发送FPS
     static int frameCount = 0;

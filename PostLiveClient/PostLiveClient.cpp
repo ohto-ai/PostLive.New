@@ -4,6 +4,7 @@
 #include <QPushButton>
 #include <QStyle>
 #include <QMouseEvent>
+#include "CameraHelper.h"
 
 extern "C" {
 #include <libavdevice/avdevice.h>
@@ -41,6 +42,16 @@ PostLiveClient::PostLiveClient(QWidget* parent)
         ui->menu_Devices->addAction(device->device_description.c_str(), [this, device] {
             ui->ffmpegWidget->stop();
             ui->ffmpegWidget->setInputDevice(device);
+
+            auto res = CameraHelper::getInstance().getSupportedResolutions(*device);
+            ui->menuResolutions->clear();
+            for (auto& r : res) {
+                ui->menuResolutions->addAction(QString("%1x%2").arg(r.width()).arg(r.height()), [this, device, r] {
+                    ui->ffmpegWidget->stop();
+                    ui->ffmpegWidget->addOption("video_size", QString("%1x%2").arg(r.width()).arg(r.height()));
+                    ui->ffmpegWidget->play();
+                    });
+            }
             ui->ffmpegWidget->play();
             });
     }
@@ -50,6 +61,7 @@ PostLiveClient::PostLiveClient(QWidget* parent)
         ui->menu_Devices->addAction(device.device_description.c_str(), [this, &device] {
             ui->ffmpegWidget->stop();
             ui->ffmpegWidget->setInputDevice(&device);
+            ui->menuResolutions->clear();
             ui->ffmpegWidget->play();
             });
     }

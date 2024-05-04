@@ -109,6 +109,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CameraHelper.cpp" />
     <ClCompile Include="components\CommonConfigDialog.cpp" />
     <ClCompile Include="components\DraggableZone.cpp" />
     <ClCompile Include="components\FileDropZone.cpp" />
@@ -133,7 +134,8 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="crt/dll_crt.h" />
+    <ClInclude Include="CameraHelper.h" />
+    <ClInclude Include="utils/dll_crt.h" />
     <ClInclude Include="ffmpeg\FFmpegInputDevice.h" />
     <ClInclude Include="utils/scope_guard.hpp" />
     <ClInclude Include="components/WinDbgHelper.h" />
