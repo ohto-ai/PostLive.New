@@ -111,14 +111,14 @@ bool FFmpegVideo::open() {
 #endif // _DEBUG
 
         if (inputVideoCodec == nullptr) {
-            error(-1, "Cannot find decoder.");
+            postError(-1, "Cannot find decoder.");
             break;
         }
 
         // allocate codec context
         inputVideoCodecContext = avcodec_alloc_context3(inputVideoCodec);
         if (inputVideoCodecContext == nullptr) {
-            error(-1, "Cannot allocate codec context.");
+            postError(-1, "Cannot allocate codec context.");
             break;
         }
         ec = avcodec_parameters_to_context(inputVideoCodecContext, inputFormatContext->streams[inputVideoStreamIndex]->codecpar);
@@ -142,7 +142,7 @@ bool FFmpegVideo::open() {
             w, h, AV_PIX_FMT_RGB32, // 目的地址长宽以及数据格式
             SWS_BICUBIC, nullptr, nullptr, nullptr); // 算法类型  AV_PIX_FMT_YUVJ420P   AV_PIX_FMT_BGR24
         if (img_ctx == nullptr) {
-            error(-1, "Cannot create sws context.");
+            postError(-1, "Cannot create sws context.");
             break;
         }
 
@@ -238,5 +238,5 @@ void FFmpegVideo::postFFmpegError(int error) {
     char err_msg[512];
     av_strerror(error, err_msg, sizeof(err_msg));
     qWarning() << QString::asprintf("FFmpeg error: (%d) %s", error, err_msg);
-    this->error(error, err_msg);
+    emit postError(error, err_msg);
 }

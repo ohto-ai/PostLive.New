@@ -17,7 +17,7 @@ private:
     void clean();
     bool open();
 signals:
-    void error(int error, const QString& msg);
+    void postError(int error, const QString& msg);
     void streamReady(const struct AVStream* stream);
     void frameReady(const QImage& image);
 

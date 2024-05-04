@@ -52,7 +52,7 @@ FFmpegWidget::FFmpegWidget(QWidget* parent)
         }
         }, Qt::QueuedConnection);
 
-    connect(ffmpegVideo, &FFmpegVideo::error, this, [this](int ec, const QString& error) {
+    connect(ffmpegVideo, &FFmpegVideo::postError, this, [this](int ec, const QString& error) {
         ffmpegVideoErrorCode = ec;
         ffmpegVideoErrorString = error;
         clearFrame();
