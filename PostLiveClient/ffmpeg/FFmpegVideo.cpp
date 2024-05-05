@@ -47,19 +47,12 @@ FFmpegVideo::~FFmpegVideo() {
     stop();
 }
 
-void FFmpegVideo::setUrl(QString url) {
-    std::lock_guard lock{ inputDeviceMutex };
-    this->inputUrl = url;
-    this->inputDevice = nullptr;
-}
-
 bool FFmpegVideo::setInputDevice(const FFmpegInputDevice* device) {
     std::lock_guard lock{ inputDeviceMutex };
     if (device == nullptr || std::find(device->media_types.begin(), device->media_types.end(), AVMEDIA_TYPE_VIDEO) == device->media_types.end()) {
         return false;
     }
     this->inputDevice = device;
-    this->inputUrl = device->streamUrls[AVMEDIA_TYPE_VIDEO].c_str();
     return true;
 }
 
@@ -77,13 +70,13 @@ void FFmpegVideo::clean() {
 
 bool FFmpegVideo::open() {
     do {
-        if (inputUrl.isEmpty()) {
+        if (inputDevice == nullptr) {
             break;
         }
         int ec = 0;
         inputFormatContext = avformat_alloc_context();
 
-        ec = avformat_open_input(&inputFormatContext, inputUrl.toUtf8().constData(), inputDevice != nullptr ? inputDevice->input_format : nullptr, &inputOptions);
+        ec = avformat_open_input(&inputFormatContext, inputDevice->streamUrls[AVMEDIA_TYPE_VIDEO].c_str(), inputDevice->input_format, &inputOptions);
         if (ec < 0) {
             postFFmpegError(ec);
             break;
@@ -104,7 +97,7 @@ bool FFmpegVideo::open() {
 
 #ifdef _DEBUG
         //打印输入和输出信息：长度 比特率 流格式等
-        av_dump_format(inputFormatContext, 0, inputUrl.toUtf8().constData(), 0);
+        av_dump_format(inputFormatContext, 0, inputDevice->streamUrls[AVMEDIA_TYPE_VIDEO].c_str(), 0);
 #endif // _DEBUG
 
         if (inputVideoCodec == nullptr) {

@@ -9,7 +9,6 @@ public:
     FFmpegVideo(QObject* parent = nullptr);
     ~FFmpegVideo();
 
-    void setUrl(QString url);
     bool setInputDevice(const struct FFmpegInputDevice* device);
     void run() override;
     void stop();
@@ -25,7 +24,6 @@ signals:
 private:
     void postFFmpegError(int error);
 
-    QString inputUrl;
     const struct FFmpegInputDevice* inputDevice = nullptr;
     struct AVFormatContext* inputFormatContext = nullptr;
     struct AVCodecContext* inputVideoCodecContext = nullptr;

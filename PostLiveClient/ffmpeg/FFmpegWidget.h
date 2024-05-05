@@ -14,7 +14,6 @@ public:
     ~FFmpegWidget();
 
 public:
-    void setUrl(const QString& url);
     bool setInputDevice(const struct FFmpegInputDevice* device);
     void play();
     void stop();

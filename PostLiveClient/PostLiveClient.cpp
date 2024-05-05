@@ -23,7 +23,8 @@ PostLiveClient::PostLiveClient(QWidget* parent)
             return;
         }
         ui->ffmpegWidget->stop();
-        ui->ffmpegWidget->setUrl(url.toLocalFile());
+        m_fileDevice = std::make_unique<FFmpegInputDevice>(FFmpegInputDevice::make_local_file_device(url.toLocalFile().toStdString()));
+        ui->ffmpegWidget->setInputDevice(m_fileDevice.get());
         ui->ffmpegWidget->play();
         });
 

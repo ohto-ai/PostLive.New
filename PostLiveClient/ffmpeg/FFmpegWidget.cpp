@@ -7,6 +7,7 @@
 #include <QDateTime>
 #include <QStatusBar>
 #include <QMainWindow>
+#include "ffmpeg/FFmpegInputDevice.h"
 
 extern "C" {
 #include <libavformat/avformat.h>
@@ -69,7 +70,10 @@ FFmpegWidget::FFmpegWidget(QWidget* parent)
 
     connect(this, &FileDropZone::onFileDropped, this, [this](const QStringList& paths) {
         if (paths.size() > 0) {
-            setUrl(paths[0]);
+            static FFmpegInputDevice device;
+            device = FFmpegInputDevice::make_local_file_device(paths[0].toStdString());
+            stop();
+            setInputDevice(&device);
             play();
         }
         });
@@ -82,10 +86,6 @@ FFmpegWidget::FFmpegWidget(QWidget* parent)
 
 FFmpegWidget::~FFmpegWidget() {
     delete ffmpegVideo;
-}
-
-void FFmpegWidget::setUrl(const QString& url) {
-    ffmpegVideo->setUrl(url);
 }
 
 bool FFmpegWidget::setInputDevice(const FFmpegInputDevice* device) {
@@ -151,14 +151,15 @@ void FFmpegWidget::updateStatusBar() {
             if (videoStream != nullptr) {
                 status += QString(" | Size: %1x%2").arg(frameImage.width()).arg(frameImage.height());
             }
-            if (!ffmpegVideo->inputUrl.isEmpty()) {
+            if (ffmpegVideo->inputDevice != nullptr) {
                 constexpr size_t MaxUrlLength = 50;
                 constexpr size_t RightReserved = 8;
-                if (ffmpegVideo->inputUrl.size() > MaxUrlLength) {
-                    status += QString(" | URL: %1...%2").arg(ffmpegVideo->inputUrl.left(MaxUrlLength - RightReserved - 3), ffmpegVideo->inputUrl.right(RightReserved));
+                auto url = QString::fromStdString(ffmpegVideo->inputDevice->streamUrls[AVMEDIA_TYPE_VIDEO]);
+                if (url.size() > MaxUrlLength) {
+                    status += QString(" | URL: %1...%2").arg(url.left(MaxUrlLength - RightReserved - 3), url.right(RightReserved));
                 }
                 else {
-                    status += QString(" | URL: %1").arg(ffmpegVideo->inputUrl);
+                    status += QString(" | URL: %1").arg(url);
                 }
             }
         }

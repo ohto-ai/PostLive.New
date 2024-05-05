@@ -107,3 +107,14 @@ FFmpegInputDevice FFmpegInputDevice::make_gdi_device(std::string title) {
     }
     return device;
 }
+
+FFmpegInputDevice FFmpegInputDevice::make_local_file_device(std::string file) {
+    static_assert(MediaTypeMax > AVMEDIA_TYPE_VIDEO);
+    FFmpegInputDevice device{};
+    device.input_format = nullptr;
+    device.device_name = file;
+    device.device_description = "Local File - " + file;
+    device.media_types.push_back(AVMEDIA_TYPE_VIDEO);
+    device.streamUrls[AVMEDIA_TYPE_VIDEO] = file;
+    return device;
+}

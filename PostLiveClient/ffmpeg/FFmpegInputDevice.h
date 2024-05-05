@@ -20,6 +20,7 @@ struct FFmpegInputDevice {
     static std::vector<const FFmpegInputDevice*> allDevices();
 
     static FFmpegInputDevice make_gdi_device(std::string title = "");
+    static FFmpegInputDevice make_local_file_device(std::string file);
 
 private:
     static inline std::vector<FFmpegInputDevice> devices;
