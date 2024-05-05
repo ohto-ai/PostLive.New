@@ -61,6 +61,7 @@ PostLiveClient::PostLiveClient(QWidget* parent)
         ui->menu_Devices->addAction(device.device_description.c_str(), [this, &device] {
             ui->ffmpegWidget->stop();
             ui->ffmpegWidget->setInputDevice(&device);
+            ui->ffmpegWidget->addOption("probesize", "50000000");
             ui->menuResolutions->clear();
             ui->ffmpegWidget->play();
             });

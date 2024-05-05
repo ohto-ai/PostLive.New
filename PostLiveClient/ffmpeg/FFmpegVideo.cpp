@@ -82,9 +82,6 @@ bool FFmpegVideo::open() {
         }
         int ec = 0;
         inputFormatContext = avformat_alloc_context();
-        if (inputDevice != nullptr && inputDevice->input_format != nullptr && !strcmp(inputDevice->input_format->name, "gdigrab")) {
-            av_dict_set(&inputOptions, "probesize", "50000000", 0);
-        }
 
         ec = avformat_open_input(&inputFormatContext, inputUrl.toUtf8().constData(), inputDevice != nullptr ? inputDevice->input_format : nullptr, &inputOptions);
         if (ec < 0) {
